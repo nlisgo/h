@@ -21,19 +21,51 @@
   // input field
   $validation-message-width: 200px;
 
+  // Thicker border used when input field has focus or has a validation error
+  @mixin thick-border {
+    // Adjust position of <input> to keep input field content at the same
+    // position, given the thicker border. We adjust the position rather than
+    // the padding because there are other states (eg. whether the form field
+    // has a hint) that affect the amount of padding required and this avoids
+    // doubling the number of those states.
+    position: relative;
+    left: -1px;
+    top: -1px;
+    border-width: 2px;
+  }
+
   .form-input {
     // Margin between input fields
     margin-bottom: 15px;
     position: relative;
 
+    // make space for the form-input__label to
+    // be positioned inside container
+    padding-top: $top-padding;
+
+    border: 1px solid $grey-3;
+    border-radius: 3px;
+
     background-color: $white;
   }
 
+  .form-input:hover {
+    border: 1px solid $grey-4;
+  }
+
   .form-input.is-editing {
+    @include thick-border;
+    border-color: $grey-6;
+
     z-index: $zindex-modal-content;
   }
 
   .form-input.is-error {
+
+    @include thick-border;
+    border-color: $brand;
+    padding-right: $validation-message-width + 10px;
+
     & > .form-input__label {
       color: $brand;
     }
@@ -131,54 +163,26 @@
 
   // The actual <input> element for the field
   .form-input__input {
-    padding-top: $top-padding;
+    width: 100%;
+    border: 0;
+    background: none;
+
+    // leaving remainder of padding up to
+    // the input to give more control over
+    // elements with toggles like text area
     padding-left: $h-padding;
     padding-right: $h-padding;
     padding-bottom: $bottom-padding;
-    width: 100%;
 
-    background: none;
     color: $grey-6;
     font-size: $input-font-size;
     outline: none;
-    border: 1px solid $grey-3;
-    border-radius: 3px;
   }
 
   .form-input__input.has-hint {
     .env-js-capable & {
       padding-top: $top-padding;
     }
-  }
-
-  .form-input__input:hover {
-    border: 1px solid $grey-4;
-  }
-
-  // Thicker border used when input field has focus or has a validation error
-  @mixin thick-border {
-    // Adjust position of <input> to keep input field content at the same
-    // position, given the thicker border. We adjust the position rather than
-    // the padding because there are other states (eg. whether the form field
-    // has a hint) that affect the amount of padding required and this avoids
-    // doubling the number of those states.
-    position: relative;
-    left: -1px;
-    top: -1px;
-    padding-bottom: $bottom-padding - 2px;
-    border-width: 2px;
-  }
-
-  .form-input__input:focus,
-  .form-input.is-editing > .form-input__input {
-    @include thick-border;
-    border-color: $grey-6;
-  }
-
-  .form-input.is-error > .form-input__input {
-    @include thick-border;
-    border-color: $brand;
-    padding-right: $validation-message-width + 10px;
   }
 
   .form-input__input:invalid {
