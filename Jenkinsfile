@@ -49,7 +49,7 @@ node {
             // Unit tests
             sh 'cd /var/lib/hypothesis && tox'
             // Functional tests
-            sh 'cd /var/lib/hypothesis && tox -e functional'
+            sh 'cd /var/lib/hypothesis && tox -e functional tests/functional -- -s'
         }
     } finally {
         rabbit.stop()

@@ -278,13 +278,13 @@ def _create_index(conn, name, settings):
     """
     # Check if the index exists (perhaps as an alias) and if so, return.
     if conn.indices.exists(index=name):
-        log.debug("exists() returned truthy")
+        print("exists() returned truthy")
         return
-    log.debug("exists() returned falsey")
+    print("exists() returned falsey")
 
     # Otherwise, try to create the index
     conn.indices.create(name, body=settings)
-    log.debug("create() didn't crash")
+    print("create() didn't crash")
 
 
 def _update_index_analysis(conn, name, analysis):
