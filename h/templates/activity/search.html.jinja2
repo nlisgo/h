@@ -84,6 +84,11 @@
 
   <div class="search-result-container">
     <ol class="search-result-list">
+      <header class="search-result-section__header">
+        <span class="search-result-section__title">
+          Annotations
+        </span>
+      </header>
       {% for timeframe in timeframes %}
         <li class="search-result__timeframe">
           {{ timeframe.label }}
@@ -95,6 +100,28 @@
         </li>
       {% endfor %}
     </ol>
+    <div class="search-result-section__tags">
+      <header class="search-result-section__header">
+        <span class="search-result-section__title">
+          Tags
+        </span>
+        <span class="search-result-section__count">
+          {{ aggregations.tags | length }}
+        </span>
+      </header>
+      <div class="search-result-tags">
+        {% for tag in aggregations.tags %}
+          <div class="search-result-tag js-tag">
+            <div class="search-result-tag__name">
+              {{ tag.tag }}
+            </div>
+            <div class="search-result-tag__count">
+              {{ tag.count }}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
   </div>
 
   {% if page and page.max > 1 %}

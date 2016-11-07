@@ -7,10 +7,12 @@
   font-size: $normal-font-size;
   margin-top: 20px;
   color: $grey-6;
+  display: flex;
 }
 
 .search-result-list {
   max-width: 950px;
+  flex-grow: 1;
 
   // Remove default padding from <ol>
   list-style: none;
@@ -146,6 +148,41 @@
 .search-bucket-stats__address,
 .search-bucket-stats__username {
   word-break: break-all;
+}
+
+.search-result-section__header {
+  color: $brand;
+  size: $normal-font-size;
+}
+
+.search-result-section__title {
+  font-weight: bold;
+}
+
+.search-result-tags {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 350px;
+  margin-top: 30px;
+}
+
+.search-result-tag {
+  background-color: $grey-2;
+  border-radius: 2px;
+  display: flex;
+  margin-bottom: 5px;
+  margin-right: 5px;
+  padding: 5px;
+}
+
+.search-result-tag__name {
+  margin-right: 10px;
+  color: $grey-6;
+  font-weight: bold;
+}
+
+.search-result-tag__count {
+  color: $grey-4;
 }
 
 // On large tablets and below, display bucket titles beneath rather than

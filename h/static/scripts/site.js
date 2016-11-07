@@ -17,6 +17,7 @@ var FormSelectOnFocusController = require('./controllers/form-select-onfocus-con
 var SearchBarController = require('./controllers/search-bar-controller');
 var SearchBucketController = require('./controllers/search-bucket-controller');
 var SignupFormController = require('./controllers/signup-form-controller');
+var TagController = require('./controllers/tag-controller');
 var TooltipController = require('./controllers/tooltip-controller');
 var upgradeElements = require('./base/upgrade-elements');
 
@@ -31,6 +32,7 @@ var controllers = {
   '.js-search-bucket': SearchBucketController,
   '.js-signup-form': SignupFormController,
   '.js-tooltip': TooltipController,
+  '.js-tag': TagController,
 };
 
 if (window.envFlags && window.envFlags.get('js-capable')) {
