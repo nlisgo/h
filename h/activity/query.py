@@ -13,6 +13,7 @@ from memex.search.query import (
 import newrelic.agent
 from pyramid.httpexceptions import HTTPFound
 from sqlalchemy.orm import subqueryload
+from webob.multidict import MultiDict
 
 from h import presenters
 from h.activity import bucketing
@@ -41,7 +42,8 @@ def extract(request, parse=parser.parse):
     If no query is present in the passed request, returns ``None``.
     """
 
-    q = parse(request.params.get('q', ''))
+    q = MultiDict()
+    query_string_q = parse(request.params.get('q', ''))
 
     # If the query sent to a {group, user} search page includes a {group,
     # user}, we override it, because otherwise we'll display the union of the
@@ -50,11 +52,38 @@ def extract(request, parse=parser.parse):
     # (Note that a query for the *intersection* of >1 users or groups is by
     # definition empty)
     if request.matched_route.name == 'activity.group_search':
+        try:
+            query_string_q.pop('group')
+        except KeyError:
+            pass
         q['group'] = request.matchdict['pubid']
     elif request.matched_route.name == 'activity.user_search':
+        try:
+            query_string_q.pop('user')
+        except KeyError:
+            pass
         q['user'] = request.matchdict['username']
 
+    # Extend the query parsed from URL path terms with the query extracted from
+    # the query string. This allows the resulting query to be serialized back
+    # into a string by `format()`, preserving the original order of terms from
+    # the URL.
+    q.extend(query_string_q)
+
     return q
+
+
+def format(query):
+    """
+    Format a query dict returned by `parse()` into a search query string.
+
+    For example, given a request for the URL `/search?q=user:foo+tag:bar`,
+    `format(extract(request))` will return `user:foo tag:bar`.
+
+    `format(extract(request))` will return a string that preserves the original
+    order of terms in the URL.
+    """
+    return parser.unparse(query)
 
 
 def check_url(request, query, unparse=parser.unparse):
