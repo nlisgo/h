@@ -22,6 +22,7 @@ class LozengeController extends Controller {
     super(containerEl, options);
     const lozengeEl = document.createElement('div');
     let lozengeMarkup = escapeHtml(options.content);
+    const currentLozenges = containerEl.querySelectorAll('.lozenge');
 
     if (searchTextParser.hasKnownNamedQueryTerm(options.content)) {
       const queryTerm = searchTextParser.getLozengeFacetNameAndValue(options.content);
@@ -42,7 +43,17 @@ class LozengeController extends Controller {
       '</div>';
     lozengeEl.classList.add('lozenge');
     lozengeEl.classList.add('js-lozenge');
-    containerEl.appendChild(lozengeEl);
+
+    // append the lozenge after the last lozgenge child
+    // or as the very first element in the container.
+    // We are doing this over appendChild because we don't want to limit
+    // the ability for the container to also hold other elements like an
+    // input field - allowing them to flow together in the same box model
+    if (currentLozenges && currentLozenges.length > 0) {
+      currentLozenges[currentLozenges.length - 1].insertAdjacentElement('afterend', lozengeEl);
+    } else {
+      containerEl.insertAdjacentElement('afterbegin', lozengeEl);
+    }
 
     lozengeEl.querySelector('.js-lozenge__close').addEventListener('mousedown', () => {
       lozengeEl.remove();
